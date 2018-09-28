@@ -1,0 +1,52 @@
+OSEv3:
+ children:
+  lb:
+   hosts:  
+     loadbalancer1.GUID.internal:
+
+  masters:
+   hosts:
+    master1.GUID.internal:
+     openshift_hostname: master1.GUID.internal
+     openshift_node_labels: "{'env':'master', 'cluster': 'GUID'}"
+    master2.GUID.internal:
+     openshift_hostname: master2.GUID.internal
+     openshift_node_labels: "{'env':'master', 'cluster': 'GUID'}"
+    master3.GUID.internal:
+     openshift_hostname: master3.GUID.internal
+     openshift_node_labels: "{'env':'master', 'cluster': 'GUID'}"
+
+  etcd:
+   children:
+    masters:
+
+  infra:
+   hosts:
+    infranode1.GUID.internal:
+     openshift_hostname: infranode1.GUID.internal
+     openshift_node_labels: "{'env':'infra', 'cluster': 'GUID'}"
+    infranode2.GUID.internal:
+     openshift_hostname: infranode2.GUID.internal
+     openshift_node_labels: "{'env':'infra', 'cluster': 'GUID'}"
+
+
+  nodes:
+   children:
+    masters:
+    infra:
+   hosts:
+    node1.GUID.internal:
+     openshift_hostname: node1.GUID.internal
+     openshift_node_labels: "{'client':'alpha', 'cluster': 'GUID'}"
+    node2.GUID.internal:
+     openshift_hostname: node2.GUID.internal
+     openshift_node_labels: "{'client':'beta', 'cluster': 'GUID'}"
+    node3.GUID.internal:
+     openshift_hostname: node3.GUID.internal
+     openshift_node_labels: "{'client':'common', 'cluster': 'GUID'}"
+  
+  nfs:
+   hosts:
+    support1.GUID.internal:
+     openshift_hostname: support1.GUID.internal
+

@@ -1,0 +1,12 @@
+openshift_metrics_install_metrics: true
+openshift_metrics_storage_kind: nfs
+openshift_metrics_storage_access_modes: ['ReadWriteOnce']
+openshift_metrics_storage_nfs_directory: /srv/nfs
+openshift_metrics_storage_nfs_options: '*(rw,root_squash)'
+openshift_metrics_storage_volume_name: metrics
+openshift_metrics_storage_volume_size: 10Gi
+openshift_metrics_storage_labels: {'storage': 'metrics'}
+openshift_metrics_cassandra_nodeselector: {"env":"infra"}
+openshift_metrics_hawkular_nodeselector: {"env":"infra"}
+openshift_metrics_heapster_nodeselector: {"env":"infra"}
+

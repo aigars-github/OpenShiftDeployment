@@ -1,0 +1,46 @@
+- hosts: masters[0]
+  gather_facts: no
+  name: tests
+  tasks:
+  - name: Smoke test (project)
+    shell: oc new-project smoke-test
+  - name: Check Project crated
+    shell: oc get project  smoke-test
+    register: result
+    until: result.stdout.find("Active") != -1
+    retries: 30
+    delay: 1
+  - name: Smoke test (mongo-app)
+    shell: oc new-app nodejs-mongo-persistent
+  - name: Check App is building
+    shell: oc get pods -n  smoke-test | grep nodejs-mongo-persistent | grep build
+    register: result
+    until: result.stdout.find("Running") != -1
+    retries: 30
+    delay: 1
+
+  - name: Check App is deploying
+    shell: oc get pods -n  smoke-test | grep nodejs-mongo-persistent | grep deploy
+    register: result
+    until: result.stdout.find("Running") != -1
+    retries: 30
+    delay: 1
+
+  - name: Check App is running
+    shell: oc get pods -n  smoke-test | grep nodejs-mongo-persistent | grep -v "deploy\|build"
+    register: result
+    until: result.stdout.find("Running") != -1
+    retries: 30
+    delay: 1
+
+  - name: Get Route
+    shell: oc get route | tail -1 | awk '{print $2}'
+    register: route
+
+  - name: Download Welcome pagee
+    get_url:
+      url: http://{{ route }}
+      dest: /dev/null
+  - name: Cleanup
+    shell: oc delete project smoke-test
+

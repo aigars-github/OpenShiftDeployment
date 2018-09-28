@@ -1,0 +1,94 @@
+---
+-  hosts: masters
+   gather_facts: no
+   name: Fix the https://bugzilla.redhat.com/show_bug.cgi?id=1469358
+   tasks:
+   - name: create directory
+     file: path=/etc/origin/master/ state=directory
+   - name: Create ca.serial.txt    
+     copy:
+       dest: "/etc/origin/master/ca.serial.tx"
+       content: 1
+
+-  hosts: all
+   gather_facts: no
+-  name: Run Prerequisites
+   import_playbook:  /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+
+-  name: Deploy Openshift
+   import_playbook:  /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml 
+
+
+- name: Get system:admin privileges
+  hosts: masters[0]
+  tasks:
+    - name: copy the .kube directory from master1 to your bastion
+      fetch: src=/root/.kube/config dest=/root/.kube/config flat=yes
+
+- name: Recheck
+  hosts: localhost
+  tasks:
+    - name: make sure you are system:dmin
+      shell: oc whoami | grep system:admin
+    - name: switch to default
+      shell: oc project default
+
+- name: Make Admin user
+  hosts: masters
+  tasks:
+  -  name: Run HTPASSWD 
+     htpasswd:
+          path: /etc/origin/master/htpasswd
+          name: admin
+          password: redhat
+ 
+- name: Assign Admin user
+  hosts: localhost
+  tasks:
+    - name: Assigning
+      shell: oc adm policy add-cluster-role-to-user cluster-admin admin
+
+
+-  hosts: localhost
+   gather_facts: no
+   name: Create NFS exports
+   serial: 1
+   tasks:
+   -  name: Include NFS taks
+      include_tasks: playbooks/nfs.yml GUID={{GUID}} volume={{ item }}
+      with_sequence: 0-20
+      delegate_to: localhost
+   
+- hosts: nodes
+  gather_facts: no
+  name: Fix NFS Persistent Volume Recycling
+  tasks:
+   - name: update recycler
+     shell: "docker pull registry.access.redhat.com/openshift3/ose-recycler:latest"
+   - name: tag recycler
+     shell: "docker tag registry.access.redhat.com/openshift3/ose-recycler:latest registry.access.redhat.com/openshift3/ose-recycler:v3.10.14"
+
+-  hosts: localhost
+   gather_facts: no
+-  name: Run Smoke-Test
+   import_playbook:  playbooks/smoketest.yml
+
+
+-  hosts: localhost
+   gather_facts: no
+-  name: CICD
+   import_playbook:  playbooks/cicd.yml
+
+
+
+-  hosts: localhost
+   gather_facts: no
+-  name: Setup Dedicated Environment
+   import_playbook:  playbooks/dedicated.yml 
+
+-  hosts: localhost
+   gather_facts: no
+-  name: Create Users
+   import_playbook:  playbooks/policy.yml
+
+

@@ -1,0 +1,7 @@
+openshift_deployment_type: openshift-enterprise
+deployment_type: openshift-enterprise
+containerized: false
+openshift_disable_check: "memory_availability"
+osm_default_node_selector: 'client=common'
+openshift_hosted_infra_selector: "env=infra"
+

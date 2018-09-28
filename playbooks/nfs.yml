@@ -1,0 +1,38 @@
+   -  name: Check PV{{ volume }} not exists
+      shell: oc get pv pv{{ volume }}
+      register: get_pv_output
+      delegate_to: "{{ groups.masters[0] }}" 
+      failed_when: False
+
+   -  name: Create NFS exports directory
+      file: path=/srv/nfs/user-vols/pv{{ volume }} state=directory mode=777 owner=nfsnobody group=nfsnobody
+      delegate_to: "{{ groups.nfs[0] }}"
+      when: get_pv_output.rc == 1
+
+   -  name: Create NFS exports paths
+      lineinfile:
+        dest: /etc/exports.d/openshift-uservols.exports
+        regexp: "^/srv/nfs/user-vols/pv{{ volume }}"
+        line: "/srv/nfs/user-vols/pv{{ volume }} *(rw,root_squash)"
+        create: true
+      delegate_to: "{{ groups.nfs[0] }}"
+      when: get_pv_output.rc == 1
+
+   -  name: reload NFS server
+      systemd:
+        name: nfs-server
+        state: reloaded
+      delegate_to: "{{ groups.nfs[0] }}"
+      when: get_pv_output.rc == 1
+
+   -  name: Create PV definition file
+      template: 
+         src: pv-template.j2
+         dest: /tmp/pv.yml
+      delegate_to: "{{ groups.masters[0] }}"
+      when: get_pv_output.rc == 1
+     
+   - name: Create PV{{ volume }} if not exists
+     command: oc create -f /tmp/pv.yml
+     delegate_to: "{{ groups.masters[0] }}" 
+     when: get_pv_output.rc == 1

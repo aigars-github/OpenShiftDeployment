@@ -1,0 +1,46 @@
+---
+-  hosts: localhost
+   gather_facts: no
+   name: Set Network Polocy
+   tasks:
+    - name: Label the namespace
+      command: "oc label namespace default name=default  --overwrite"
+
+    - name: Export project template
+      shell: "oc adm create-bootstrap-project-template -o yaml > /tmp/template.yml"
+
+    - name: add limits to file
+      blockinfile:
+         path:  /tmp/template.yml
+         insertbefore: "parameters:"
+         marker: ""
+         block: "{{ lookup('file', '../templates/limits.yml') }}"
+
+    - name: add network policy to file
+      blockinfile:
+         path:  /tmp/template.yml
+         insertbefore: "parameters:"
+         marker: ""
+         block: "{{ lookup('file', '../templates/policy.yml') }}"
+    - name: Import project template
+      command: "oc create -f /tmp/template.yml -n default"
+    
+-  hosts: masters
+   gather_facts: no
+   name: Restart Services
+   tasks:
+    - name: Add the new project template
+      replace:
+        path: /etc/origin/master/master-config.yaml
+        regexp: "  projectRequestTemplate: ''"
+        replace: "  projectRequestTemplate: 'default/project-request'"
+    - name: Restart APIs
+      service:
+        name: atomic-openshift-master-api
+        state: restarted
+
+    - name: Restart controllers
+      service:
+        name: atomic-openshift-master-controllers
+        state: restarted
+

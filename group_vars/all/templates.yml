@@ -1,0 +1,2 @@
+openshift_template_service_broker_namespaces: ['openshift']
+

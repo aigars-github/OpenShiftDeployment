@@ -1,0 +1,41 @@
+---
+-  hosts: localhost
+   gather_facts: no
+   name: Limit Users to their projects
+   tasks:
+    - name: Create projects
+      command: "oc adm new-project {{ item }}"
+      with_items:
+        - "common --display-name='Common' --node-selector='client=common'"
+        - "alpha --display-name='Alpha' --node-selector='client=alpha'"
+        - "beta --display-name='Beta' --node-selector='client=beta'"
+      failed_when: False 
+ 
+    - name: Create Groups
+      command: "{{ item }}"
+      with_items:
+        - "oc adm groups new alpha"
+        - "oc adm groups new beta"
+        - "oc adm groups new common"
+      failed_when: False
+
+    - name: Add policies to groups
+      command: "{{ item }}"
+      with_items:
+        - "oc policy add-role-to-group common beta -n common"
+        - "oc policy add-role-to-group admin beta -n beta"
+        - "oc policy add-role-to-group admin alpha -n alpha" 
+      failed_when: False
+ 
+    - name: Disable self provisioning(1)
+      command: "oc patch clusterrolebinding.rbac self-provisioners -p '{\"subjects\": null}'"
+      failed_when: False
+ 
+    - name: Disable self provisioning(2)
+      command:  "oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth"
+      failed_when: False
+
+    - name: create users
+      include_tasks: users.yml  username={{ item.key }} groupname={{ item.value }} password=redhat
+      with_dict: {Amy: alpha, Andrew: alpha, Brian: beta, Betty: beta}
+      

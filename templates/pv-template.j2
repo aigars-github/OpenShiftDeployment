@@ -1,0 +1,19 @@
+---
+{
+  "apiVersion": "v1",
+  "kind": "PersistentVolume",
+  "metadata": {
+    "name": "pv{{ volume }}"
+  },
+  "spec": {
+    "capacity": {
+        "storage": "{{ range(1, 10) | random }}Gi"
+    },
+    "accessModes": [ "ReadWriteOnce" ],
+    "nfs": {
+        "path": "/srv/nfs/user-vols/pv{{ volume}}",
+        "server": "support1.{{ GUID }}.internal"
+    },
+    "persistentVolumeReclaimPolicy": "Recycle"
+  }
+}

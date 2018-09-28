@@ -1,0 +1,15 @@
+openshift_logging_install_logging: True
+openshift_logging_storage_kind: nfs
+openshift_logging_storage_access_modes: ['ReadWriteOnce']
+openshift_logging_storage_nfs_directory: /srv/nfs
+openshift_logging_storage_nfs_options: '*(rw,root_squash)'
+openshift_logging_storage_volume_name: logging
+openshift_logging_storage_volume_size: 10Gi
+openshift_logging_storage_labels: {'storage': 'logging'}
+
+# openshift_logging_kibana_hostname: kibana.apps.GUID.example.opentlc.com
+openshift_logging_es_cluster_size: 1
+openshift_logging_es_nodeselector: {"env":"infra"}
+openshift_logging_kibana_nodeselector: {"env":"infra"}
+openshift_logging_curator_nodeselector: {"env":"infra"}
+
