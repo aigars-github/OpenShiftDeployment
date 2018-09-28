@@ -41,6 +41,4 @@
     get_url:
       url: http://{{ route }}
       dest: /dev/null
-  - name: Cleanup
-    shell: oc delete project smoke-test
 
