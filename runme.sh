@@ -4,7 +4,7 @@ if [ -f "./hosts" ]; then
    sudo sudo ansible-playbook  -i ./hosts /usr/share/ansible/openshift-ansible/playbooks/adhoc/uninstall.yml
    sudo ansible nodes -a "rm -rf /etc/origin"
    sudo ansible nfs -a "rm -rf /srv/nfs/*"
-   rm -rf *
+   rm -rf group_vars LICENSE README.md playbook playbooks hosts.GUID hosts.GUID playbook.yml runme.sh templates
 fi
 export GUID=`hostname|awk -F. '{print $2}'`
 git clone https://github.com/aigars-github/OpenShiftDeployment.git .
