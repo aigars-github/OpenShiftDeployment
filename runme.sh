@@ -7,7 +7,8 @@ if [ -f "./hosts" ]; then
    rm -rf group_vars LICENSE README.md playbook playbooks hosts.GUID hosts.GUID playbook.yml runme.sh templates
 fi
 export GUID=`hostname|awk -F. '{print $2}'`
-git clone https://github.com/aigars-github/OpenShiftDeployment.git .
-rm -rf .git
+git clone https://github.com/aigars-github/OpenShiftDeployment.git
+/bin/cp -ax OpenShiftDeployment/* .
+rm -rf OpenShiftDeployment
 cat hosts.GUID | sed  s/GUID/$GUID/g > hosts
 sudo ansible-playbook  -i ./hosts -f 20 -e "GUID=$GUID" playbook.yml 
