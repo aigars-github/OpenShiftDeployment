@@ -20,7 +20,7 @@
     - name: Add policies to groups
       command: "{{ item }}"
       with_items:
-        - "oc policy add-role-to-group common beta -n common"
+        - "oc policy add-role-to-group admin beta -n common"
         - "oc policy add-role-to-group admin beta -n beta"
         - "oc policy add-role-to-group admin alpha -n alpha" 
  
