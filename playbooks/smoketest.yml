@@ -19,13 +19,6 @@
     retries: 30
     delay: 1
 
-  - name: Check App is deploying
-    shell: oc get pods -n  smoke-test | grep nodejs-mongo-persistent | grep deploy
-    register: result
-    until: result.stdout.find("Running") != -1
-    retries: 30
-    delay: 1
-
   - name: Check App is running
     shell: oc get pods -n  smoke-test | grep nodejs-mongo-persistent | grep -v "deploy\|build"
     register: result
