@@ -46,7 +46,7 @@
       shell: oc get pods -n  cicd-dev | grep maven | tail -1
       register: result
       until: result.stdout.find("Running") != -1
-      retries: 30
+      retries: 100
       delay: 30
 
     - name: Check App is being built on tasks-build
