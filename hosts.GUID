@@ -8,13 +8,13 @@ OSEv3:
    hosts:
     master1.GUID.internal:
      openshift_hostname: master1.GUID.internal
-     openshift_node_labels: "{'env':'master', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-master
     master2.GUID.internal:
      openshift_hostname: master2.GUID.internal
-     openshift_node_labels: "{'env':'master', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-master
     master3.GUID.internal:
      openshift_hostname: master3.GUID.internal
-     openshift_node_labels: "{'env':'master', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-master
 
   etcd:
    children:
@@ -24,10 +24,10 @@ OSEv3:
    hosts:
     infranode1.GUID.internal:
      openshift_hostname: infranode1.GUID.internal
-     openshift_node_labels: "{'env':'infra', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-infra
     infranode2.GUID.internal:
      openshift_hostname: infranode2.GUID.internal
-     openshift_node_labels: "{'env':'infra', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-infra
 
 
   nodes:
@@ -37,13 +37,13 @@ OSEv3:
    hosts:
     node1.GUID.internal:
      openshift_hostname: node1.GUID.internal
-     openshift_node_labels: "{'client':'alpha', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-compute-alpha
     node2.GUID.internal:
      openshift_hostname: node2.GUID.internal
-     openshift_node_labels: "{'client':'beta', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-compute-beta
     node3.GUID.internal:
      openshift_hostname: node3.GUID.internal
-     openshift_node_labels: "{'client':'common', 'cluster': 'GUID'}"
+     openshift_node_group_name: node-config-compute-common
   
   nfs:
    hosts:
