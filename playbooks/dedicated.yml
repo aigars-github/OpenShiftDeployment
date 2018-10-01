@@ -31,7 +31,7 @@
     - name: Disable self provisioning(1)
       command: "oc patch clusterrolebinding.rbac self-provisioners -p '{\"subjects\": null}'"
  
-    - name: Disable self provisioning(2)
-      command:  "oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth"
+    #- name: Disable self provisioning(2)
+    #  command:  "oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth"
       
       
