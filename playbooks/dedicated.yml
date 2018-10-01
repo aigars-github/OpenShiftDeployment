@@ -24,14 +24,14 @@
         - "oc policy add-role-to-group admin beta -n beta"
         - "oc policy add-role-to-group admin alpha -n alpha" 
  
+    - name: create users
+      include_tasks: users.yml  username={{ item.key }} groupname={{ item.value }} password=redhat
+      with_dict: {Amy: alpha, Andrew: alpha, Brian: beta, Betty: beta}
+
     - name: Disable self provisioning(1)
       command: "oc patch clusterrolebinding.rbac self-provisioners -p '{\"subjects\": null}'"
  
     - name: Disable self provisioning(2)
       command:  "oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth"
-      failed_when: false
       
-    - name: create users
-      include_tasks: users.yml  username={{ item.key }} groupname={{ item.value }} password=redhat
-      with_dict: {Amy: alpha, Andrew: alpha, Brian: beta, Betty: beta}
       
