@@ -35,12 +35,8 @@
         regexp: "  projectRequestTemplate: ''"
         replace: "  projectRequestTemplate: 'default/project-request'"
     - name: Restart APIs
-      service:
-        name: atomic-openshift-master-api
-        state: restarted
+      command: /usr/local/bin/master-restart api
 
     - name: Restart controllers
-      service:
-        name: atomic-openshift-master-controllers
-        state: restarted
+      command: /usr/local/bin/master-restart controllers
 
