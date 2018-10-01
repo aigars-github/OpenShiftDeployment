@@ -1,26 +1,29 @@
 openshift_node_groups:
  - name: node-config-master
-   - labels:
-      node-role.kubernetes.io/master=true
-      cluster: GUID
-      env: master
+   labels:  
+    - 'node-role.kubernetes.io/master=true'
+    - 'cluster={{ GUID }}'
+    - 'env=master'
  - name: node-config-infra
-   - labels:
-      node-role.kubernetes.io/infra=true
-      cluster: GUID
-      env: infra
+   labels:
+     - 'node-role.kubernetes.io/infra=true'  
+     - 'cluster={{ GUID }}'
+     - 'env=infra'
  - name: node-config-compute-alpha
-   - labels:
-      node-role.kubernetes.io/compute=true
-      cluster: GUID
-      client: alpha
+   labels:  
+      - 'node-role.kubernetes.io/compute=true'
+      - 'cluster={{ GUID }}'
+      - 'env=compute' 
+      - 'client=alpha'
  - name: node-config-compute-beta
-   - labels:
-      node-role.kubernetes.io/compute=true
-      cluster: GUID
-      client: beta
+   labels: 
+      - 'node-role.kubernetes.io/compute=true'
+      - 'cluster={{ GUID }}'  
+      - 'env=compute' 
+      - 'client=beta'
  - name: node-config-compute-common
-   - labels:
-      node-role.kubernetes.io/compute=true
-      cluster: GUID
-      client: common
+   labels: 
+      - 'node-role.kubernetes.io/compute=true'
+      - 'cluster={{ GUID }}'  
+      - 'env=compute' 
+      - 'client=common'
