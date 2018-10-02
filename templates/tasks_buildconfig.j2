@@ -234,7 +234,7 @@ items:
                  tasksApp.narrow("svc").expose()
                  openshift.set("probe dc/tasks --readiness --get-url=http://:8080/ws/demo/healthcheck --initial-delay-seconds=10 --failure-threshold=10 --period-seconds=10")
                  openshift.set("probe dc/tasks --liveness --get-url=http://:8080/ws/demo/healthcheck --initial-delay-seconds=10 --failure-threshold=10 --period-seconds=10")
-                 openshift.set("resources dc tasks --limits=cpu=350m,memory=1Gi --requests=cpu=200m,memory=512Mi")
+                 openshift.set("resources dc tasks --limits=cpu=350m,memory=512Mi --requests=cpu=200m,memory=256Mi")
                  openshift.selector("dc", "tasks").autoscale("--min 1 --max 10 --cpu-percent=80 --name='tasks-hpa'")      
                 } 
                }
