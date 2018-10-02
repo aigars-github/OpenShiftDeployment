@@ -5,6 +5,7 @@ if [ -f "./hosts" ]; then
    sudo ansible nodes -m shell -a "rm -rf /etc/origin"
    sudo ansible nfs -m shell -a "rm -rf /etc/exports.d/openshift-uservols.exports"
    sudo ansible nfs -m shell -a "rm -rf /etc/exports.d/openshift-ansible.exports"
+   sudo ansible nfs -m shell -a "rm -rf /etc/exports.d/openshift-prometheus.exports"
    sudo ansible nfs -m shell -a "rm -rf /srv/nfs/*"
    sudo ansible nfs -m shell -a "rm -rf /srv/nfs/*"
    sudo ansible -i ./hosts nfs  -m service -a "name=nfs-server state=reloaded"
