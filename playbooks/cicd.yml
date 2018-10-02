@@ -43,27 +43,27 @@
       command: "oc start-build bc/tasks-bc -n cicd-dev"
 
     - name: Check Pipeline is Started 
-      shell: oc get pods -n  cicd-dev | grep maven | tail -1
+      shell: oc get builds -n cicd-dev | tail -1 | awk '{print $3}'
       register: result
       until: result.stdout.find("Running") != -1
       retries: 300
-      delay: 10
+      delay: 10 
 
-    - name: Check App is running on tasks-dev
+    - name: Check App is deployed on tasks-dev
       shell: oc get pods -n  tasks-dev | grep tasks | grep -v deploy
       register: result
       until: result.stdout.find("Running") != -1
       retries: 300
       delay: 10
 
-    - name: Check App is running  on tasks-test
+    - name: Check App is deployed  on tasks-test
       shell: oc get pods -n  tasks-test | grep tasks | grep -v deploy
       register: result
       until: result.stdout.find("Running") != -1
       retries: 300
       delay: 10
 
-    - name: Check App is running  on tasks-prod
+    - name: Check App is deployed  on tasks-prod
       shell: oc get pods -n  tasks-prod | grep tasks | grep -v deploy
       register: result
       until: result.stdout.find("Running") != -1
