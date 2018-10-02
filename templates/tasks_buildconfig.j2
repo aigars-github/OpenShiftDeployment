@@ -253,7 +253,7 @@ items:
                openshift.withCluster() {
                 openshift.withProject("tasks-prod") {
                  openshift.selector("dc", "tasks").rollout().latest();
-                 sleep 30 
+                 sleep 10 
                 }
                }
               }
