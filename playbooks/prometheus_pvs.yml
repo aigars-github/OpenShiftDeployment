@@ -1,4 +1,8 @@
-
+---
+-  hosts: localhost
+   gather_facts: no
+   name: Limit Users to their projects
+   tasks:
    -  name: Create NFS prometheus exports directory
       file: path=/srv/nfs/{{ item }} state=directory mode=777 owner=nfsnobody group=nfsnobody
       with_items:
