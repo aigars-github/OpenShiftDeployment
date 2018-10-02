@@ -2,14 +2,16 @@
 - name: CICD
   hosts: localhost
   tasks:
-    - name: Create  projects
+    - name: Create  tasks projects
       command: "oc new-project {{ item }}"
       with_items:
-        - "cicd-dev --description='Jenkins' --display-name='Jenkins'"
         - "tasks-build --description='Building' --display-name='Building'"
         - "tasks-dev --description='Development' --display-name='Development'"
         - "tasks-test --description='Testing' --display-name='Testing'"
         - "tasks-prod --description='Production' --display-name='Production'"
+
+    - name: Create  Jenkins projects on infra
+      command: "oc adm new-project cicd-dev --description='Jenkins' --display-name='Jenkins' --node-selector=env=infra"
 
     - name: Setup Jenkins
       command: "oc new-app jenkins-persistent  --param MEMORY_LIMIT=4Gi --param VOLUME_CAPACITY=4Gi -p ENABLE_OAUTH=true -e JENKINS_PASSWORD=jenkins -n cicd-dev"
