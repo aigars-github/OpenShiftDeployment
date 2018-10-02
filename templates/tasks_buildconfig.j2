@@ -99,6 +99,7 @@ items:
                  def tasksApp = openshift.newApp("tasks-dev/tasks:latest --name=tasks")
                  sleep 5
                  openshift.selector("dc", "tasks").rollout().cancel()
+                 sleep 10
                  openshift.set("triggers", "dc/tasks", "--manual")      
                  tasksApp.narrow("svc").expose()
                  openshift.set("probe dc/tasks --readiness --get-url=http://:8080/ws/demo/healthcheck --initial-delay-seconds=10 --failure-threshold=10 --period-seconds=10")
@@ -115,6 +116,7 @@ items:
                openshift.withCluster() {
                 openshift.withProject("tasks-dev") {
                  openshift.selector("dc", "tasks").rollout().latest();
+                 sleep 30 
                 }    
                }
               }
@@ -165,6 +167,7 @@ items:
                  def tasksApp = openshift.newApp("tasks-test/tasks:latest --name=tasks")
                  sleep 5
                  openshift.selector("dc", "tasks").rollout().cancel()
+                 sleep 10
                  openshift.set("triggers", "dc/tasks", "--manual")
                  tasksApp.narrow("svc").expose()
                  openshift.set("probe dc/tasks --readiness --get-url=http://:8080/ws/demo/healthcheck --initial-delay-seconds=10 --failure-threshold=10 --period-seconds=10")
@@ -181,6 +184,7 @@ items:
                openshift.withCluster() {
                 openshift.withProject("tasks-test") {
                  openshift.selector("dc", "tasks").rollout().latest();
+                  sleep 30 
                 }
                }
               }
@@ -230,7 +234,7 @@ items:
                  def tasksApp = openshift.newApp("tasks-prod/tasks:latest --name=tasks")
                  sleep 5
                  openshift.selector("dc", "tasks").rollout().cancel()
-                 sleep 5
+                 sleep 10
                  openshift.set("triggers", "dc/tasks", "--manual")      
                  tasksApp.narrow("svc").expose()
                  openshift.set("probe dc/tasks --readiness --get-url=http://:8080/ws/demo/healthcheck --initial-delay-seconds=10 --failure-threshold=10 --period-seconds=10")
@@ -249,6 +253,7 @@ items:
                openshift.withCluster() {
                 openshift.withProject("tasks-prod") {
                  openshift.selector("dc", "tasks").rollout().latest();
+                 sleep 30 
                 }
                }
               }
@@ -260,7 +265,6 @@ items:
               script {
                openshift.withCluster() {
                 openshift.withProject("tasks-prod") {
-                 sleep 30 
                  def dcObj = openshift.selector('dc', "tasks").object()
                  def podSelector = openshift.selector('pod', [deployment: "tasks-${dcObj.status.latestVersion}"])
                  podSelector.untilEach {
