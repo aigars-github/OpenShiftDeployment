@@ -1,0 +1,43 @@
+
+   -  name: Create NFS prometheus exports directory
+      file: path=/srv/nfs/{{ item }} state=directory mode=777 owner=nfsnobody group=nfsnobody
+      with_items:
+        - prometheus
+        - prometheus-alertmanager
+        - prometheus-alertbuffer
+      delegate_to: "{{ groups.nfs[0] }}"
+
+   -  name: Create NFS exports paths
+      lineinfile:
+        dest: /etc/exports.d/openshift-prometheus.exports
+        regexp: "^/srv/nfs/{{ item }}"
+        line: "/srv/nfs/{{ item }} *(rw,root_squash)"
+        create: true
+      delegate_to: "{{ groups.nfs[0] }}"
+
+   -  name: reload NFS server
+      systemd:
+        name: nfs-server
+        state: reloaded
+      delegate_to: "{{ groups.nfs[0] }}"
+      when: get_pv_output.rc == 1
+
+   -  name: Create PV definition file
+      template: 
+         vars:
+           volume: {{ item }}
+         src: prometheus.j2
+         dest: /tmp/{{ item }}.yml
+      with_items:
+        - prometheus
+        - prometheus-alertmanager
+        - prometheus-alertbuffer
+      delegate_to: "{{ groups.masters[0] }}"
+     
+   - name: Create PV{{ volume }} if not exists
+     command: oc create -f /tmp/{{ item }}.yml
+     with_items:
+       - prometheus
+       - prometheus-alertmanager
+       - prometheus-alertbuffer
+     delegate_to: "{{ groups.masters[0] }}" 
