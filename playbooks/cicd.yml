@@ -70,7 +70,13 @@
       retries: 300
       delay: 10 
 
-          
+    - name: Check Pipeline is finished
+      shell: oc get builds -n cicd-dev | tail -1 | awk '{print $3}'
+      register: result
+      until: result.stdout.find("Complete") != -1
+      retries: 300
+      delay: 10 
+         
     - name: Get Route of App on tasks-prod
       shell: oc get route | tail -1 | awk '{print $2}'
       register: route
