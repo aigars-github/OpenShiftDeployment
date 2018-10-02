@@ -49,13 +49,6 @@
       retries: 300
       delay: 10
 
-    - name: Check App is being built on tasks-build
-      shell: oc get pods -n  tasks-build | grep tasks
-      register: result  
-      until: result.stdout.find("Completed") != -1
-      retries: 300
-      delay: 10
-
     - name: Check App is running on tasks-dev
       shell: oc get pods -n  tasks-dev | grep tasks | grep -v deploy
       register: result
