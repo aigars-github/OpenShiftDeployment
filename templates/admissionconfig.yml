@@ -1,0 +1,21 @@
+    ProjectRequestLimit:
+      configuration:
+        apiVersion: v1
+        kind: ProjectRequestLimitConfig
+        limits:
+        - selector:
+            client: alpha
+        - selector:
+            client: beta
+        - selector:
+            client: common
+          maxProjects: 0
+    PodNodeSelector:
+      configuration:
+        podNodeSelectorPluginConfig:
+          clusterDefaultNodeSelector: "client=common"
+          alpha: client=alpha 
+          clusterDefaultNodeSelector: "client=beta"
+          beta: client=beta
+          clusterDefaultNodeSelector: "client=common"
+          common: client=common
