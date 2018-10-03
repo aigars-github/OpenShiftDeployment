@@ -1,6 +1,6 @@
 ---
    -  name: Create user {{ username }} in htpasswd
-      htpasswd: 
+      htpasswd:
           path: /etc/origin/master/htpasswd
           name: "{{ username }}"
           password: '{{ password }}'
@@ -8,9 +8,12 @@
       with_items: "{{ groups.masters }}"
       loop_control:
         loop_var: masterhost
-    
 
    -  name: Add {{ username }} to {{ groupname }} group
       shell:  oc adm groups add-users {{ groupname }} {{ username }}
-   
 
+   -  name: create user default identity
+      shell:  oc create user {{ username }}
+
+   -  name: Add label the user
+      shell:  oc label users {{ username }} client={{ groupname }}
