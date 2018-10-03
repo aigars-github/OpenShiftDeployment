@@ -1,0 +1,6 @@
+---
+-  hosts: localhost
+   gather_facts: no
+   tasks:
+     - name: create user
+       include_tasks: users.yml  username={{ username }} groupname={{ client }} password={{ password }}
