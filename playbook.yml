@@ -50,7 +50,7 @@
 
 -  hosts: localhost
    gather_facts: no
-   name: Create Prometheus volumes (bug: https://bugzilla.redhat.com/show_bug.cgi?id=1544858)
+   name: Create Prometheus volumes https://bugzilla.redhat.com/show_bug.cgi?id=1544858
    serial: 1
    tasks:
    -  name: Include NFS Prometheus taks
