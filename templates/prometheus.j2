@@ -10,6 +10,6 @@
     accessModes:
        - ReadWriteOnce
     nfs:
-        path: /srv/nfs/{{ volume}},
+        path: /srv/nfs/{{ volume}}
         server: support1.{{ GUID }}.internal
     persistentVolumeReclaimPolicy: Recycle
