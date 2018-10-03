@@ -1,4 +1,4 @@
-  -  name: Create NFS prometheus exports directory
+   -  name: Create NFS prometheus exports directory
       file: path=/srv/nfs/{{ volume }} state=directory mode=777 owner=nfsnobody group=nfsnobody
       delegate_to: "{{ groups.nfs[0] }}"
 
