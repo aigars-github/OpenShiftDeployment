@@ -5,8 +5,10 @@
         limits:
         - selector:
             client: alpha
+          maxProjects: 0
         - selector:
             client: beta
+          maxProjects: 0
         - selector:
             client: common
           maxProjects: 0
