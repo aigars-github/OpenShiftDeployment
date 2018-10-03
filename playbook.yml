@@ -48,7 +48,6 @@
     - name: Assigning
       shell: oc adm policy add-cluster-role-to-user cluster-admin admin
 
----
 -  hosts: localhost
    gather_facts: no
    name: Create Prometheus volumes
