@@ -48,6 +48,20 @@
     - name: Assigning
       shell: oc adm policy add-cluster-role-to-user cluster-admin admin
 
+---
+-  hosts: localhost
+   gather_facts: no
+   name: Create Prometheus volumes
+   serial: 1
+   tasks:
+   -  name: Include NFS Prometheus taks
+      include_tasks: playbooks/prometheus_pvs.yml GUID={{GUID}} volume={{ item }}
+      with_items:
+        - prometheus
+        - prometheus-alertmanager
+        - prometheus-alertbuffer
+      delegate_to: localhost
+
 
 -  hosts: localhost
    gather_facts: no
