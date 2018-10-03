@@ -20,12 +20,6 @@
    gather_facts: no
    name: Limit Users to their projects
    tasks:
-   # - name: Disable self-provisioners autoupdate
-   #  command: "oc patch clusterrolebinding.rbac self-provisioners -p '{ \"metadata\": {\"annotations\": { \"rbac.authorization.kubernetes.io/autoupdate\": \"false\" } } }'"
-   #
-   # - name: Disable self provisioning
-   #  command:  "oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth"
-   #
     - name: Wait a litle for masters to come back up
       command: sleep 30
 
