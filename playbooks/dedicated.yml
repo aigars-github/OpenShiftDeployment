@@ -16,8 +16,6 @@
     - name: Restart APIs
       command: /usr/local/bin/master-restart api
 
-
-
 -  hosts: localhost
    gather_facts: no
    name: Limit Users to their projects
@@ -28,6 +26,9 @@
    # - name: Disable self provisioning
    #  command:  "oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth"
    #
+    - name: Wait a litle for masters to come back up
+      command: sleep 30
+
     - name: Create projects
       command: "oc adm new-project {{ item }}"
       with_items:
