@@ -12,7 +12,7 @@
         - "tasks-prod --description='Production' --display-name='Production'"
 
     - name: Setup Jenkins
-      command: "oc new-app jenkins-persistent  --param MEMORY_LIMIT=1Gi --param VOLUME_CAPACITY=1Gi -p ENABLE_OAUTH=true -e JENKINS_PASSWORD=jenkins -n cicd-dev"
+      command: "oc new-app jenkins-persistent  --param MEMORY_LIMIT=4Gi --param VOLUME_CAPACITY=4Gi -p ENABLE_OAUTH=true -e JENKINS_PASSWORD=jenkins -n cicd-dev"
 
     - name: Add policy to the jenkins
       command: "oc policy add-role-to-user edit system:serviceaccount:cicd-dev:jenkins -n {{ item }}"
