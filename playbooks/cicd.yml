@@ -78,7 +78,7 @@
       delay: 10 
          
     - name: Get Route of App on tasks-prod
-      shell: oc get route | tail -1 | awk '{print $2}'
+      shell: oc get route -n tasks-prod | tail -1 | awk '{print $2}'
       register: route
 
     - name: Download page from tasks-prod
